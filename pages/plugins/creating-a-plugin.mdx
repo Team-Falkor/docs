@@ -4,7 +4,7 @@ This guide will walk you through the process of creating a plugin for Falkor. Pl
 
 ## Prerequisites
 
-To create a plugin, you need to use a language capable of serving JSON data. While we recommend using Node.js, you are free to use any language you're comfortable with.
+To create a plugin, you need to use a language capable of serving JSON data. While we recommend using Node.js, you are free to use any language you are comfortable with.
 
 ## Required Routes
 
@@ -12,23 +12,24 @@ For a plugin to work, the following routes are required:
 
 - `/setup.json`
 - `/search/:os/:query`
+- `/return/:return`
 
 ### `setup.json`
 
 The `setup.json` file is used to configure the plugin. It contains the following fields:
 
-- `id`: A unique identifier for the plugin.
-- `version`: The version of the plugin, used to determine compatibility.
-- `config`: A boolean indicating whether the plugin has a configuration page. If true, the plugin will appear in the settings menu.
-- `multiple-choice`: A boolean indicating whether the plugin supports multiple games. If true, additional requests may be needed to fetch source links.
-- `name`: The name of the plugin, displayed in the settings menu.
-- `description`: A description of the plugin, shown in the settings menu.
-- `logo`: A URL to the plugin's logo, displayed in the settings menu.
-- `banner`: A URL to the plugin's banner, displayed in the settings menu. (Optional)
-- `api_url`: The base URL for the plugin's API, used for making requests.
-- `author`: Information about the author of the plugin. (Optional)
+- **id**: A unique identifier for the plugin.
+- **version**: The version of the plugin, used to determine compatibility.
+- **config**: A boolean indicating whether the plugin has a configuration page. If `true`, the plugin will appear in the settings menu.
+- **multiple-choice**: A boolean indicating whether the needs an extra request to get the source. If `true`, additional requests may be needed to fetch source links.
+- **name**: The name of the plugin, displayed in the settings menu.
+- **description**: A description of the plugin, shown in the settings menu.
+- **logo**: A URL to the plugin's logo, displayed in the settings menu.
+- **banner**: A URL to the plugin's banner, displayed in the settings menu. (Optional)
+- **api_url**: The base URL for the plugin's API, used for making requests.
+- **author**: Information about the author of the plugin. (Optional)
 
-### Example `setup.json`
+#### JSON Response - `setup.json`
 
 ```json
 {
@@ -47,3 +48,68 @@ The `setup.json` file is used to configure the plugin. It contains the following
   }
 }
 ```
+
+### `search/:os/:query`
+
+The `search/:os/:query` route is used to fetch games. It takes two parameters:
+
+- `os`: The operating system of the games to search for.
+- `query`: The search query to use.
+
+The route should return a JSON array of game objects. Each game object should contain the following fields:
+
+#### JSON Response - `DDL`
+
+```json
+[
+  {
+    "type": "ddl",
+    "name": "Example Game",
+    "url": "https://example.com/game.exe",
+    "size": 1024
+  }
+]
+```
+
+- `type`: The type of game. This should be `ddl` as it is a direct download link.
+- `name`: The name of the game.
+- `url`: The URL of the game.
+- `size`: The size of the game in bytes.
+
+#### JSON Response - `Torrent` or `Magnet`
+
+```json
+[
+  {
+    "type": "torrent",
+    "seeds": 100,
+    "name": "Example Game",
+    "uploader": "example",
+    "return": "base64-string",
+    "size": 1024
+  }
+]
+```
+
+- `type`: The type of game. This should be either `torrent`, or `magnet`.
+- `name`: The name of the game.
+- `seeds`: The number of seeds for the game.
+- `uploader`: The uploader of the game.
+- `return`: The return type of the game. This should be either `base64-string` or `magnet-uri`.
+- `size`: The size of the game in bytes.
+
+### `return/:return`
+
+The `return/:return` route is used to fetch the actual torrent. It takes one parameter:
+
+- `return`: The return type of the game. This should be either `base64-string` or `magnet-uri`.
+
+The route should return a JSON ARRAY with the following fields:
+
+#### JSON Response - `return/:return`
+
+```json
+["link-to-torrent"]
+```
+
+That should be it now you just install the plugin using the setup.json file and the app should use it as intended.
