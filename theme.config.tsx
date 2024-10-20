@@ -47,6 +47,8 @@ const config: DocsThemeConfig = {
     // Determine page title, falling back to the formatted route if no frontMatter.title exists
     const pageTitle = frontMatter.title || formatRouteTitle(asPath);
 
+    const description = `Falkor documentation. Falkor is an open-source launcher that allows you to browse games, explore upcoming releases, and find the best deals with built-in IsThereAnyDeal integration to compare prices (please note, purchases are made through your default browser, not within the app). Designed to be flexible and expandable, Falkor’s core functionality is enhanced by community-created providers, giving users the power to customize and extend the app in countless ways.`;
+
     return (
       <>
         <title>{`${pageTitle} - Falkor Documentation`}</title>
@@ -56,6 +58,12 @@ const config: DocsThemeConfig = {
         />
         {/* Set favicon */}
         <link rel="icon" href="/icon.png" type="image/png" />
+
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+        <meta name="twitter:description" content={description} />
+
+        <meta name="twitter:card" content="summary_large_image" />
       </>
     );
   },
