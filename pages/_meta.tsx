@@ -1,4 +1,4 @@
 export default {
   index: "Introduction",
-  plugins: "Plugins",
+  "plugin-providers": "Plugin Providers",
 };
