@@ -1,0 +1,46 @@
+# Creating a plugin
+
+This guide will walk you through the process of creating a plugin for Falkor. The plugins can be made in any language, as they are just apis that serve json data.
+
+## Creating a plugin
+
+To create a plugin you need to use a language that can serve json data. We recommend using Node.js, but you can use any language you want.
+
+## Needed Routes
+
+The following routes are needed for a plugin to work:
+
+- `/setup.json`
+- `/search/:os/:query`
+
+### Setup.json
+
+The setup.json file is used to configure the plugin. It contains the following fields:
+
+- `id`: The id of the plugin. This is used to identify the plugin and should be unique.
+- `version`: The version of the plugin. This is used to determine compatibility with the plugin.
+- `config`: Whether the plugin has a configuration page. This is used to determine whether the plugin should be displayed in the settings menu.
+- `multiple-choice`: Whether the plugin supports multiple games. This is used to determine whether the plugin needs another request to get the source links
+- `name`: The name of the plugin. This is used to display the plugin in the settings menu.
+- `description`: A description of the plugin. This is used to display the plugin in the settings menu.
+- `logo`: The logo of the plugin. This is used to display the plugin in the settings menu.
+- `banner`: The banner of the plugin. This is used to display the plugin in the settings menu. (optional)
+- `api_url`: The url of the api of the plugin. This is used to make requests to the plugin.
+- `author`: The author of the plugin. This is used to display the plugin in the settings menu. (optional)
+
+#### EXAMPLE
+
+```json
+{
+  "id": "example",
+  "version": "1.0.0",
+  "config": true,
+  "multiple-choice": false,
+  "name": "Example Plugin",
+  "description": "This is an example plugin.",
+  "logo": "https://example.com/logo.png",
+  "banner": "https://example.com/banner.png",
+  "api_url": "https://example.com/api",
+  "author": "Example Author"
+}
+```
