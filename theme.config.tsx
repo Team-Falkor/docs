@@ -21,7 +21,9 @@ const config: DocsThemeConfig = {
         src="/icon.png"
         style={{ height: "28px", width: "28px", objectFit: "contain" }}
       />
-      <span style={{ marginLeft: ".4em", fontWeight: 800 }}>Falkor Docs</span>
+      <span style={{ marginLeft: ".4em", fontWeight: 800 }}>
+        Falkor Documentation
+      </span>
     </>
   ),
   project: {
@@ -47,8 +49,11 @@ const config: DocsThemeConfig = {
 
     return (
       <>
-        <title>{`${pageTitle} - Falkor Docs`}</title>
-        <meta property="og:title" content={`${pageTitle} - Falkor Docs`} />
+        <title>{`${pageTitle} - Falkor Documentation`}</title>
+        <meta
+          property="og:title"
+          content={`${pageTitle} - Falkor Documentation`}
+        />
         {/* Set favicon */}
         <link rel="icon" href="/icon.png" type="image/png" />
       </>
