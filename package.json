@@ -1,0 +1,31 @@
+{
+  "name": "docs",
+  "version": "0.0.1-beta",
+  "description": "Falkor's documentation",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/team-falkor/docs.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/team-falkor/docs/issues"
+  },
+  "homepage": "https://github.com/team-falkor/docs/#readme",
+  "dependencies": {
+    "next": "^14.2.15",
+    "nextra": "^3.0.15",
+    "nextra-theme-docs": "^3.0.15",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.7",
+    "@types/react": "^18.3.11",
+    "typescript": "^5.6.3"
+  }
+}
