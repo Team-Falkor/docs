@@ -6,10 +6,8 @@ Welcome to the official documentation for the **Falkor Game Launcher**. This rep
 Access the complete documentation at [docs.falkor.moe](https://docs.falkor.moe)
 
 ## Technologies Used
-- **MDX** (57%)
-- **TypeScript** (35%)
-- **JavaScript** (7%)
-- **CSS** (0.7%)
+- **MDX** 
+- **TypeScript**
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more details.
