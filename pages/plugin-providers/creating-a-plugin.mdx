@@ -21,7 +21,7 @@ The `setup.json` file is used to configure the plugin. It contains the following
 - **id**: A unique identifier for the plugin.
 - **version**: The version of the plugin, used to determine compatibility.
 - **config**: A boolean indicating whether the plugin has a configuration page. If `true`, the plugin will appear in the settings menu.
-- **multiple-choice**: A boolean indicating whether the needs an extra request to get the source. If `true`, additional requests may be needed to fetch source links.
+- **multiple_choice**: A boolean indicating whether the needs an extra request to get the source. If `true`, additional requests may be needed to fetch source links.
 - **name**: The name of the plugin, displayed in the settings menu.
 - **description**: A description of the plugin, shown in the settings menu.
 - **logo**: A URL to the plugin's logo, displayed in the settings menu.
@@ -36,7 +36,7 @@ The `setup.json` file is used to configure the plugin. It contains the following
   "id": "example",
   "version": "1.0.0",
   "config": true,
-  "multiple-choice": false,
+  "multiple_choice": false,
   "name": "Example Plugin",
   "description": "This is an example plugin.",
   "logo": "https://example.com/logo.png",
@@ -65,16 +65,18 @@ The route should return a JSON array of game objects. Each game object should co
   {
     "type": "ddl",
     "name": "Example Game",
-    "url": "https://example.com/game.exe",
-    "size": 1024
+    "url": "https://example.com/download",
+    "size": 1024,
+    "mutiple_choice": true,
   }
 ]
 ```
 
 - `type`: The type of game. This should be `ddl` as it is a direct download link.
 - `name`: The name of the game.
-- `url`: The URL of the game.
+- `url`: The URL of the game, or if multiple choice is set a base64 string which will be sent to the /return endpoint
 - `size`: The size of the game in bytes.
+- `mutiple_choice`: setting the value here will override the one set in the setup.json (optional)
 
 #### JSON Response - `Torrent` or `Magnet`
 
@@ -86,7 +88,8 @@ The route should return a JSON array of game objects. Each game object should co
     "name": "Example Game",
     "uploader": "example",
     "return": "base64-string",
-    "size": 1024
+    "size": 1024,
+    "multiple_choice": false
   }
 ]
 ```
@@ -97,6 +100,7 @@ The route should return a JSON array of game objects. Each game object should co
 - `uploader`: The uploader of the game.
 - `return`: The return type of the game. This should be either `base64-string` or `magnet-uri`.
 - `size`: The size of the game in bytes.
+- `multiple_choice`: setting the value here will override the one set in the setup.json (optional)
 
 ### `return/:return`
 
