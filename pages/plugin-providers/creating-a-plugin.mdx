@@ -65,18 +65,18 @@ The route should return a JSON array of game objects. Each game object should co
   {
     "type": "ddl",
     "name": "Example Game",
-    "url": "https://example.com/download",
+    "return": "https://example.com/download",
     "size": 1024,
-    "mutiple_choice": true,
+    "multiple_choice": true,
   }
 ]
 ```
 
 - `type`: The type of game. This should be `ddl` as it is a direct download link.
 - `name`: The name of the game.
-- `url`: The URL of the game, or if multiple choice is set a base64 string which will be sent to the /return endpoint
+- `return`: The URL of the game, or if multiple choice is set a base64 string which will be sent to the /return endpoint
 - `size`: The size of the game in bytes.
-- `mutiple_choice`: setting the value here will override the one set in the setup.json (optional)
+- `multiple_choice`: setting the value here will override the one set in the setup.json (optional)
 
 #### JSON Response - `Torrent` or `Magnet`
 
