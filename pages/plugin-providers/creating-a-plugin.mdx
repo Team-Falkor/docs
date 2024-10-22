@@ -4,7 +4,7 @@ This guide will walk you through the process of creating a plugin for Falkor. Pl
 
 ## Prerequisites
 
-To create a plugin, you need to use a language capable of serving JSON data. While we recommend using Node.js, you are free to use any language you are comfortable with.
+To create a plugin, you need to use a language capable of serving JSON data. While we recommend using Node.js, you are free to use any language you are comfortable with. Here in the tutorial we will write endpoints in Node JS format where :value corresponds to the actual value such as "Windows" for :os. 
 
 ## Required Routes
 
@@ -104,7 +104,7 @@ The route should return a JSON array of game objects. Each game object should co
 
 ### `return/:return`
 
-The `return/:return` route is used to fetch the actual torrent. It takes one parameter:
+The `return/:return` route is used to fetch the actual torrent/direct link. It takes one parameter:
 
 - `return`: The return type of the game. This should be either `base64-string` or `magnet-uri`.
 
