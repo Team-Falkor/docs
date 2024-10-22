@@ -1,1 +1,32 @@
 # Setting up Configuration for your Plugin
+This guide will show you how to correctly add a configuration to your plugin.
+
+## Setup
+First of all, to  add configuration to your plugin you need to correctly configure your setup.json. The `config` field must be set to `true` as shown below:
+```json
+{
+  "id": "example",
+  "version": "1.0.0",
+  "config": true,
+  "multiple_choice": false,
+  "name": "Example Plugin",
+  "description": "This is an example plugin, look: the config value is set to true.",
+  "logo": "https://example.com/logo.png",
+  "api_url": "https://example.com/api",
+}
+```
+However, to make it effective, the setup.json needs to be installed like so `https://pluginurl.com/:config/setup.json`, where `:config` is your actual configuration. The configuration can be passed in any way you prefer: A Base64 encoded string, a boolean etc.  
+
+For instance, if I am scraping two sites, I could add the option to choose which one to scrape in the configuration. 
+
+### Example:
+
+Let's say I am scraping `https://example.com/` and `https://httpbin.org/`. Let's call the first site "1" and the second site "2". If I want the user to only retrieve results, with my plugin, from the first site the setup.json would look like this `https://pluginurl.com/1/setup.json`  
+
+## Handling others endpoints
+To correctly handle configuration on other endpoints, your server will always need to have configuration into his endpoint, just one slash before the .json `https://pluginurl.com/search/Windows/:config/results.json`
+
+## Configuration Page
+Your plugin will most likely need a configuration page where users can configure the plugin. What matters here is that, after the user chooses their desired settings for the plugin, the server generates the correct configured setup.json which users can copy and then paste into Falkor.
+
+We do not enforce it but it is highly reccomended to have the configuration page on `/configure` endpoint or root, `/`, endpoint.  
