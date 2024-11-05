@@ -70,19 +70,21 @@ The route should return a JSON array of game objects. Each game object should co
     "return": "https://example.com/download",
     "size": 1024,
     "multiple_choice": true,
+    "uploader": "The uploader of the file",
     "game_version": "V0.11.101",
     "password": "password",
   }
 ]
 ```
 
-- **type**: Specifies the type of download. This should be set to `"ddl"` for a direct download link.
-- **name**: The name of the game.
-- **return**: The URL for downloading the game. If `multiple_choice` is set, this field should be a base64 string that will be processed by the `/return` endpoint.
-- **size**: The size of the game in bytes. This field is optional.
-- **multiple_choice**: Boolean indicating if multiple download options are available. Setting this value here will override any value set in `setup.json` (optional).
-- **game_version**: Version of the game. (optional).
-- **password**: Password required to access the game download, if applicable (optional).
+- `type`: Specifies the type of download. This should be set to `"ddl"` for a direct download link.
+- `name`: The name of the game.
+- `return`: The URL for downloading the game. If `multiple_choice` is set, this field should be a base64 string that will be processed by the `/return` endpoint.
+- `uploader`: The uploader of the game
+- `size`: The size of the game in bytes. This field is (optional).
+- `multiple_choice`: Boolean indicating if multiple download options are available. Setting this value here will override any value set in `setup.json` (optional).
+- `game_version`: Version of the game. (optional).
+- `password`: Password required to access the game download, if applicable (optional).
 
 
 #### JSON Response - `Torrent` or `Magnet`
@@ -110,8 +112,8 @@ The route should return a JSON array of game objects. Each game object should co
 - `return`: The return type of the game. This should be either `base64-string` or `magnet-uri`.
 - `size`: The size of the game in bytes.
 - `multiple_choice`: setting the value here will override the one set in the setup.json (optional)
-- **game_version**: Version of the game. (optional).
-- **password**: Password required to access the game download, if applicable (optional).
+- `game_version` Version of the game. (optional).
+- `password`: Password required to access the game download, if applicable (optional).
 
 ### `return/:return`
 
