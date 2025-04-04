@@ -1,0 +1,85 @@
+# Creating a Plugin with createPlugin
+
+This guide will walk you through the process of creating a plugin for Falkor using the `createPlugin` function from the Falkor Plugin SDK. This method provides an efficient way to build, manage, and deploy plugins.
+
+## Prerequisites
+
+To use `createPlugin`, you need:
+- **Node.js** (or Bun for optimized performance)
+- **TypeScript** (recommended but not mandatory)
+- **Falkor Plugin SDK** installed
+
+### Installation
+
+You can install the Falkor Plugin SDK using:
+
+```bash
+# Using npm
+npm install @team-falkor/plugin-sdk
+
+# Using yarn
+yarn add @team-falkor/plugin-sdk
+
+# Using bun
+bun add @team-falkor/plugin-sdk
+```
+
+## Creating a Plugin
+
+Below is a basic example of how to use `createPlugin`:
+
+```typescript
+import { createPlugin } from '@team-falkor/plugin-sdk';
+
+const plugin = createPlugin({
+  setup: {
+    id: "my.plugin.example",
+    version: "1.0.0",
+    multiple_choice: false,
+    name: "Example Plugin",
+    description: "An example plugin for Falkor",
+    logo: "https://example.com/logo.png",
+    banner: "https://example.com/banner.png", // Optional
+  },
+  port: 4000,
+  handleSearch: async (query) => {
+    // Implement search logic here
+    return { results: [{ name: "Example Result", return: "https://example.com" }] };
+  },
+  handleReturn: async (data) => {
+    // Handle return logic here
+    return { success: true };
+  },
+  options: {
+    debug: true, // Enable debug mode
+  },
+});
+```
+
+## API Reference
+
+### `createPlugin(options)`
+
+#### Options
+
+- **`setup`** (object): Metadata about the plugin
+  - `id`: Unique identifier for the plugin
+  - `version`: Plugin version
+  - `multiple_choice`: Boolean to determine if additional requests are needed
+  - `name`: Plugin name
+  - `description`: Plugin description
+  - `logo`: URL to the plugin's logo
+  - `banner`: URL to the plugin's banner (Optional)
+- **`port`** (number): Port number for the plugin's API server
+- **`handleSearch`** (async function): Function to process search requests
+- **`handleReturn`** (async function): Function to handle return requests
+- **`options`** (object): Additional configuration options
+  - `debug`: Boolean to enable debug mode
+
+## Running the Plugin
+
+Start the server like you usually would by running the main entry file where `createPlugin` is located. That should start the server, and if you have `debug` set to `true`, you should see a console log indicating that the server is running.
+
+## Conclusion
+
+You now have a fully functional Falkor plugin! Modify the `handleSearch` and `handleReturn` functions to customize the plugin's behavior. Happy coding!
