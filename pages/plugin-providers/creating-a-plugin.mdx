@@ -20,7 +20,7 @@ The `setup.json` file is used to configure the plugin. It contains the following
 
 - **id**: A unique identifier for the plugin.
 - **version**: The version of the plugin, used to determine compatibility.
-- **config**: A boolean indicating whether the plugin has a configuration page. If `true`, the plugin will appear in the settings menu.
+- **config**: A boolean or an object with the configuration for the plugin check out the `creating-a-configuration` for more information on this
 - **multiple_choice**: A boolean indicating whether the needs an extra request to get the source. If `true`, additional requests may be needed to fetch source links.
 - **name**: The name of the plugin, displayed in the settings menu.
 - **description**: A description of the plugin, shown in the settings menu.
@@ -28,6 +28,7 @@ The `setup.json` file is used to configure the plugin. It contains the following
 - **banner**: A URL to the plugin's banner, displayed in the settings menu. (Optional)
 - **api_url**: The base URL for the plugin's API, used for making requests.
 - **author**: Information about the author of the plugin. (Optional)
+- **setup_path**: Used for updating the plugin from within the app
 
 #### JSON Response - `setup.json`
 
@@ -42,6 +43,7 @@ The `setup.json` file is used to configure the plugin. It contains the following
   "logo": "https://example.com/logo.png",
   "banner": "https://example.com/banner.png",
   "api_url": "https://example.com/api",
+  "setup_path": "/1234/setup.json",
   "author": {
     "name": "example",
     "url": "https://example.com"
@@ -68,15 +70,22 @@ The route should return a JSON array of game objects. Each game object should co
     "return": "https://example.com/download",
     "size": 1024,
     "multiple_choice": true,
+    "uploader": "The uploader of the file",
+    "game_version": "V0.11.101",
+    "password": "password",
   }
 ]
 ```
 
-- `type`: The type of game. This should be `ddl` as it is a direct download link.
+- `type`: Specifies the type of download. This should be set to `"ddl"` for a direct download link.
 - `name`: The name of the game.
-- `return`: The URL of the game, or if multiple choice is set a base64 string which will be sent to the /return endpoint
-- `size`: The size of the game in bytes.
-- `multiple_choice`: setting the value here will override the one set in the setup.json (optional)
+- `return`: The URL for downloading the game. If `multiple_choice` is set, this field should be a base64 string that will be processed by the `/return` endpoint.
+- `uploader`: The uploader of the game
+- `size`: The size of the game in bytes. This field is (optional).
+- `multiple_choice`: Boolean indicating if multiple download options are available. Setting this value here will override any value set in `setup.json` (optional).
+- `game_version`: Version of the game. (optional).
+- `password`: Password required to access the game download, if applicable (optional).
+
 
 #### JSON Response - `Torrent` or `Magnet`
 
@@ -89,7 +98,9 @@ The route should return a JSON array of game objects. Each game object should co
     "uploader": "example",
     "return": "base64-string",
     "size": 1024,
-    "multiple_choice": false
+    "multiple_choice": false,
+    "game_version": "V0.11.101",
+    "password": "password",
   }
 ]
 ```
@@ -101,6 +112,8 @@ The route should return a JSON array of game objects. Each game object should co
 - `return`: The return type of the game. This should be either `base64-string` or `magnet-uri`.
 - `size`: The size of the game in bytes.
 - `multiple_choice`: setting the value here will override the one set in the setup.json (optional)
+- `game_version` Version of the game. (optional).
+- `password`: Password required to access the game download, if applicable (optional).
 
 ### `return/:return`
 
