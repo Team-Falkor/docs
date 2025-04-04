@@ -1,85 +1,135 @@
-# Creating a Plugin with createPlugin
+# Using createPlugin
 
-This guide will walk you through the process of creating a plugin for Falkor using the `createPlugin` function from the Falkor Plugin SDK. This method provides an efficient way to build, manage, and deploy plugins.
+## Overview
 
-## Prerequisites
+The `createPlugin` function is the core component of the Falkor Plugin SDK that helps you create and configure plugins. This guide will walk you through how to use it effectively.
 
-To use `createPlugin`, you need:
-- **Node.js** (or Bun for optimized performance)
-- **TypeScript** (recommended but not mandatory)
-- **Falkor Plugin SDK** installed
+## Basic Usage
 
-### Installation
-
-You can install the Falkor Plugin SDK using:
-
-```bash
-# Using npm
-npm install @team-falkor/plugin-sdk
-
-# Using yarn
-yarn add @team-falkor/plugin-sdk
-
-# Using bun
-bun add @team-falkor/plugin-sdk
-```
-
-## Creating a Plugin
-
-Below is a basic example of how to use `createPlugin`:
+Here's a basic example of how to create a plugin:
 
 ```typescript
 import { createPlugin } from '@team-falkor/plugin-sdk';
 
 const plugin = createPlugin({
   setup: {
-    id: "my.plugin.example",
+    id: "my.plugin.id",      // Must follow format: name.plugin.id
     version: "1.0.0",
-    multiple_choice: false,
-    name: "Example Plugin",
-    description: "An example plugin for Falkor",
+    multiple_choice: false,  // Set to true if your plugin needs multiple steps
+    name: 'My Plugin',
+    description: 'A description of what your plugin does',
     logo: "https://example.com/logo.png",
-    banner: "https://example.com/banner.png", // Optional
+    banner: "https://example.com/banner.png" // Optional
   },
-  port: 4000,
+  port: 3000,  // The port your plugin will run on
   handleSearch: async (query) => {
-    // Implement search logic here
-    return { results: [{ name: "Example Result", return: "https://example.com" }] };
+    // Implement your search logic here
+    return [];
   },
   handleReturn: async (data) => {
-    // Handle return logic here
-    return { success: true };
+    // Optional: Handle return data for multiple choice plugins
+    return [];
   },
   options: {
-    debug: true, // Enable debug mode
-  },
+    debug: true  // Optional: Enable debug mode
+  }
 });
 ```
 
-## API Reference
+## Configuration Options
 
-### `createPlugin(options)`
+### Required Fields
 
-#### Options
+- **setup**: The basic configuration for your plugin
+  - `id`: A unique identifier following the format `name.plugin.id`
+  - `version`: Your plugin's version number
+  - `multiple_choice`: Set to `true` if your plugin needs multiple steps
+  - `name`: The display name of your plugin
+  - `description`: A brief description of what your plugin does
+  - `logo`: URL to your plugin's logo
+  - `banner`: (Optional) URL to your plugin's banner image
 
-- **`setup`** (object): Metadata about the plugin
-  - `id`: Unique identifier for the plugin
-  - `version`: Plugin version
-  - `multiple_choice`: Boolean to determine if additional requests are needed
-  - `name`: Plugin name
-  - `description`: Plugin description
-  - `logo`: URL to the plugin's logo
-  - `banner`: URL to the plugin's banner (Optional)
-- **`port`** (number): Port number for the plugin's API server
-- **`handleSearch`** (async function): Function to process search requests
-- **`handleReturn`** (async function): Function to handle return requests
-- **`options`** (object): Additional configuration options
-  - `debug`: Boolean to enable debug mode
+- **port**: The port number your plugin will run on
 
-## Running the Plugin
+- **handleSearch**: The main search function that processes queries
+  ```typescript
+  handleSearch: async (query: string) => {
+    // Your search logic here
+    return [
+      {
+        type: "ddl", // or "torrent", "magnet"
+        name: "Example Result",
+        return: "https://example.com/download",
+        size: 1024,
+        multiple_choice: false // Override setup.multiple_choice if needed
+      }
+    ];
+  }
+  ```
 
-Start the server like you usually would by running the main entry file where `createPlugin` is located. That should start the server, and if you have `debug` set to `true`, you should see a console log indicating that the server is running.
+### Optional Fields
 
-## Conclusion
+- **handleReturn**: Required only if `multiple_choice` is true
+  ```typescript
+  handleReturn: async (data: string) => {
+    // Process the return data
+    return ["final-download-link"];
+  }
+  ```
 
-You now have a fully functional Falkor plugin! Modify the `handleSearch` and `handleReturn` functions to customize the plugin's behavior. Happy coding!
+- **options**: Additional configuration options
+  ```typescript
+  options: {
+    debug: true  // Enable debug logging
+  }
+  ```
+
+## Response Formats
+
+### Search Response
+
+Your `handleSearch` function should return an array of objects following these formats:
+
+#### For Direct Downloads (DDL)
+```typescript
+{
+  type: "ddl",
+  name: "Example Game",
+  return: "https://example.com/download",
+  size: 1024,
+  multiple_choice: false
+}
+```
+
+#### For Torrents or Magnets
+```typescript
+{
+  type: "torrent", // or "magnet"
+  seeds: 100,
+  name: "Example Game",
+  uploader: "example",
+  return: "base64-string",
+  size: 1024,
+  multiple_choice: false
+}
+```
+
+### Return Response
+
+If your plugin uses `multiple_choice`, your `handleReturn` function should return:
+```typescript
+["final-download-link"]
+```
+
+## Best Practices
+
+1. **Error Handling**: Always implement proper error handling in your search and return functions.
+
+2. **Debug Mode**: Use the debug option during development to get detailed logs:
+   ```typescript
+   options: { debug: true }
+   ```
+
+3. **Multiple Choice**: Only enable `multiple_choice` if your plugin genuinely needs a two-step process.
+
+4. **Port Selection**: Choose a port number that's unlikely to conflict with other services.
