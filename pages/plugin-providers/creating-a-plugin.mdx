@@ -4,7 +4,7 @@ This guide will walk you through the process of creating a plugin for Falkor. Pl
 
 ## Prerequisites
 
-To create a plugin, you need to use a language capable of serving JSON data. While we recommend using Node.js, you are free to use any language you are comfortable with. Here in the tutorial we will write endpoints in Node JS format where :value corresponds to the actual value such as "Windows" for :os. 
+To create a plugin, you need to use a language capable of serving JSON data. While we recommend using Node.js, you are free to use any language you are comfortable with. Here in the tutorial we will write endpoints in Node JS format where :value corresponds to the actual value such as "Windows" for :os.
 
 ## Required Routes
 
@@ -68,23 +68,36 @@ The route should return a JSON array of game objects. Each game object should co
     "type": "ddl",
     "name": "Example Game",
     "return": "https://example.com/download",
-    "size": 1024,
-    "multiple_choice": true,
     "uploader": "The uploader of the file",
+    "size": 1024,
     "game_version": "V0.11.101",
     "password": "password",
+    "multiple_choice": true,
+    "uploadedAt": "2024-01-15T14:30:00Z",
+    "description": "A brief summary of the game, its features, or contents.",
+    "platform": ["Windows"],
+    "checksums": {
+      "md5": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "status": "active"
   }
 ]
 ```
 
-- `type`: Specifies the type of download. This should be set to `"ddl"` for a direct download link.
-- `name`: The name of the game.
-- `return`: The URL for downloading the game. If `multiple_choice` is set, this field should be a base64 string that will be processed by the `/return` endpoint.
-- `uploader`: The uploader of the game
-- `size`: The size of the game in bytes. This field is (optional).
-- `multiple_choice`: Boolean indicating if multiple download options are available. Setting this value here will override any value set in `setup.json` (optional).
-- `game_version`: Version of the game. (optional).
-- `password`: Password required to access the game download, if applicable (optional).
+- `type`: Content distribution method - always `"ddl"` for direct downloads.
+- `name`: Display name or title of the discovered content.
+- `return`: Primary content identifier - HTTP/HTTPS download URL. If `multiple_choice` is true, this field should be a base64 string that will be processed by the `/return` endpoint.
+- `uploader`: Username or entity responsible for uploading the content.
+- `size`: Content size in bytes. (Optional)
+- `game_version`: Target game version compatibility identifier. (Optional)
+- `password`: Access password if content is protected, `null` if no password required. (Optional)
+- `multiple_choice`: Boolean indicating if multiple download options are available. Setting this value here will override any value set in `setup.json`. (Optional)
+- `uploadedAt`: Original upload timestamp in ISO 8601 format (e.g., `"2024-01-15T14:30:00Z"`). (Optional)
+- `description`: Content summary or additional details. (Optional)
+- `platform`: Supported platform identifiers (e.g., `["Windows", "macOS", "Linux"]`). (Optional)
+- `checksums`: File integrity verification hashes (e.g., `{ "sha256": "a1b2c3...", "md5": "d4e5f6..." }`). (Optional)
+- `status`: Download link health status (`"active"`, `"dead"`, `"unverified"`, or other string). (Optional)
 
 
 #### JSON Response - `Torrent` or `Magnet`
@@ -94,26 +107,36 @@ The route should return a JSON array of game objects. Each game object should co
   {
     "type": "torrent",
     "seeds": 100,
+    "leechs": 20,
     "name": "Example Game",
     "uploader": "example",
-    "return": "base64-string",
+    "return": "magnet:?xt=urn:btih:...",
     "size": 1024,
-    "multiple_choice": false,
     "game_version": "V0.11.101",
     "password": "password",
+    "multiple_choice": false,
+    "uploadedAt": "2024-01-15T14:30:00Z",
+    "description": "A brief summary of the game, its features, or contents.",
+    "platform": ["Windows", "Linux"],
+    "fileCount": 5
   }
 ]
 ```
 
-- `type`: The type of game. This should be either `torrent`, or `magnet`.
-- `name`: The name of the game.
-- `seeds`: The number of seeds for the game.
-- `uploader`: The uploader of the game.
-- `return`: The return type of the game. This should be either `base64-string` or `magnet-uri`.
-- `size`: The size of the game in bytes.
-- `multiple_choice`: setting the value here will override the one set in the setup.json (optional)
-- `game_version` Version of the game. (optional).
-- `password`: Password required to access the game download, if applicable (optional).
+- `type`: Content distribution method - `"torrent"` or `"magnet"`.
+- `name`: Display name or title of the discovered content.
+- `seeds`: Active seeder count providing upload bandwidth.
+- `leechs`: Active peer count downloading content. (Optional)
+- `uploader`: Username or entity responsible for uploading the content.
+- `return`: Primary content identifier - `magnet://` URI or direct `.torrent` file URL.
+- `size`: Content size in bytes. (Optional)
+- `game_version`: Target game version compatibility identifier. (Optional)
+- `password`: Access password if content is protected, `null` if no password required. (Optional)
+- `multiple_choice`: Boolean indicating if multiple download options are available. Setting this value here will override any value set in `setup.json`. (Optional)
+- `uploadedAt`: Original upload timestamp in ISO 8601 format (e.g., `"2024-01-15T14:30:00Z"`). (Optional)
+- `description`: Content summary or additional details. (Optional)
+- `platform`: Supported platform identifiers (e.g., `["Windows", "macOS", "Linux"]`). (Optional)
+- `fileCount`: Total file count within the torrent package. (Optional)
 
 ### `return/:return`
 

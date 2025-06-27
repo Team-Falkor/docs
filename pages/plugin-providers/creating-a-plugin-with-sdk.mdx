@@ -93,24 +93,73 @@ Your `handleSearch` function should return an array of objects following these f
 #### For Direct Downloads (DDL)
 ```typescript
 {
+  /** Content distribution method for direct downloads */
   type: "ddl",
+  /** Display name or title of the discovered content */
   name: "Example Game",
+  /**
+   * Primary content identifier - HTTP/HTTPS download URL
+   */
   return: "https://example.com/download",
-  size: 1024,
-  multiple_choice: false
+  /** Username or entity responsible for uploading the content */
+  uploader: "ExampleUploader",
+  /** Content size in bytes, or undefined if unavailable */
+  size: 1024, // Optional
+  /** Target game version compatibility identifier */
+  game_version: "1.2.3", // Optional
+  /** Access password if content is protected, undefined if no password required */
+  password: "securepassword", // Optional
+  /** Original upload timestamp in ISO 8601 format @example "2024-01-15T14:30:00Z" */
+  uploadedAt: "2025-06-27T10:00:00Z", // Optional
+  /** Content summary or additional details */
+  description: "A thrilling adventure game with new quests.", // Optional
+  /** Supported platform identifiers @example ["Windows", "macOS", "Linux"] */
+  platform: ["PC", "Windows"], // Optional
+  /**
+   * File integrity verification hashes @example { "sha256": "a1b2c3...", "md5": "d4e5f6..." }
+   */
+  checksums: { // Optional
+    md5: "a1b2c3d4e5f67890abcdef1234567890a",
+    sha256: "b1c2d3e4f5g67890abcdef1234567890b1c2d3e4f5g67890abcdef1234567890"
+  },
+  /**
+   * Download link health status: "active", "dead", "unverified", or other string
+   */
+  status: "active" // Optional
 }
 ```
 
 #### For Torrents or Magnets
 ```typescript
 {
+  /** Content distribution method - distinguishes magnet links from torrent files */
   type: "torrent", // or "magnet"
+  /** Active seeder count providing upload bandwidth */
   seeds: 100,
+  /** Active peer count downloading content */
+  leechs: 20, // Optional
+  /** Display name or title of the discovered content */
   name: "Example Game",
+  /** Username or entity responsible for uploading the content */
   uploader: "example",
-  return: "base64-string",
-  size: 1024,
-  multiple_choice: false
+  /**
+   * Primary content identifier - magnet:// URI or direct .torrent file URL
+   */
+  return: "base64-string-or-magnet-uri",
+  /** Content size in bytes, or undefined if unavailable */
+  size: 1024, // Optional
+  /** Target game version compatibility identifier */
+  game_version: "1.2.3", // Optional
+  /** Access password if content is protected, undefined if no password required */
+  password: "securepassword", // Optional
+  /** Original upload timestamp in ISO 8601 format @example "2024-01-15T14:30:00Z" */
+  uploadedAt: "2025-06-27T10:00:00Z", // Optional
+  /** Content summary or additional details */
+  description: "A thrilling adventure game with new quests.", // Optional
+  /** Supported platform identifiers @example ["Windows", "macOS", "Linux"] */
+  platform: ["PC", "Windows"], // Optional
+  /** Total file count within the torrent package */
+  fileCount: 5 // Optional
 }
 ```
 
